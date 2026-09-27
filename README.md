@@ -11,7 +11,7 @@ Landing page estática (HTML + CSS + JS, sem build). Para ver localmente, abra `
 - `originais/`: fotos enviadas, não usadas diretamente pelo site
 
 ## Pendências antes de publicar
-- [ ] Logo oficial (hoje recriado em SVG no `index.html`)
+- [x] Logo oficial (barras extraídas do PNG enviado; ideal ainda é o arquivo vetorial SVG/AI/PDF)
 - [ ] @ do Instagram em `js/main.js` (`CONFIG.instagram`)
 - [ ] Fotos de antes/depois (mesmo ângulo), substituindo os placeholders
 - [ ] Fotos específicas dos serviços (PPF, Ceramic, Black Piano). Hoje são recortes das fotos do galpão

@@ -75,7 +75,7 @@ svg { width: 1em; height: 1em; flex: none; }
 .topo.is-scrolled { background: rgba(11, 12, 14, .92); backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--line); }
 .topo__in { display: flex; align-items: center; justify-content: space-between; height: 76px; }
 .logo { display: flex; align-items: center; gap: 10px; }
-.logo__mark { width: 50px; height: 30px; }
+.logo__mark { width: auto; height: 42px; }
 .logo__txt { display: flex; flex-direction: column; line-height: 1; }
 .logo__txt strong { font: 800 26px/1 var(--f-head); letter-spacing: .01em; }
 .logo__txt small { font-size: 9px; letter-spacing: .2em; color: var(--muted); margin-top: 3px; }
@@ -298,7 +298,7 @@ svg { width: 1em; height: 1em; flex: none; }
   .compare { aspect-ratio: 4 / 3; }
 }
 @media (max-width: 640px) {
-  .logo__mark { width: 40px; height: 24px; }
+  .logo__mark { height: 34px; }
   .logo__txt strong { font-size: 22px; }
   .hero { min-height: 92svh; }
   .hero::before { background: linear-gradient(0deg, rgba(11,12,14,.97) 30%, rgba(11,12,14,.55) 70%, rgba(11,12,14,.35)); }
