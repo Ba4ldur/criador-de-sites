@@ -50,8 +50,12 @@ const obsNav = new IntersectionObserver((entries) => {
 }, { rootMargin: '-45% 0px -50% 0px' });
 secoes.forEach((s) => obsNav.observe(s));
 
-// Carrossel de projetos
+// Carrossel de projetos: setas só aparecem quando há o que rolar
 const track = document.getElementById('track');
+const carousel = track.closest('.carousel');
+const checkOverflow = () => carousel.classList.toggle('has-overflow', track.scrollWidth > track.clientWidth + 1);
+checkOverflow();
+new ResizeObserver(checkOverflow).observe(track);
 document.querySelectorAll('.carousel__nav').forEach((btn) => {
   btn.addEventListener('click', () => {
     const card = track.firstElementChild.getBoundingClientRect().width + 16;
@@ -77,3 +81,9 @@ const obsReveal = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.15 });
 revealEls.forEach((el) => obsReveal.observe(el));
+
+// Botão flutuante some quando o contato (com os mesmos botões) está na tela
+const whatsFloat = document.querySelector('.whats-float');
+new IntersectionObserver(([en]) => {
+  whatsFloat.classList.toggle('is-hidden', en.isIntersecting);
+}, { threshold: 0.2 }).observe(document.getElementById('contato'));

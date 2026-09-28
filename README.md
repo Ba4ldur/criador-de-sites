@@ -13,8 +13,10 @@ Landing page estática (HTML + CSS + JS, sem build). Para ver localmente, abra `
 ## Pendências antes de publicar
 - [x] Logo oficial (barras extraídas do PNG enviado; ideal ainda é o arquivo vetorial SVG/AI/PDF)
 - [ ] @ do Instagram em `js/main.js` (`CONFIG.instagram`)
-- [ ] Fotos de antes/depois (mesmo ângulo), substituindo os placeholders
+- [ ] Fotos de antes/depois (mesmo ângulo): trocar os placeholders e remover `hidden` da seção `#antes-depois`
 - [ ] Fotos específicas dos serviços (PPF, Ceramic, Black Piano). Hoje são recortes das fotos do galpão
 - [ ] Confirmar modelo e serviço de cada projeto em destaque
 - [ ] Confirmar números (seguidores, projetos, nota no Google); só publicar dados reais e comprováveis
 - [ ] Confirmar endereço e telefones
+- [ ] Horário de funcionamento: descomentar o bloco marcado em `index.html` (contato) e adicionar `openingHours` no JSON-LD
+- [ ] Domínio definitivo: trocar `https://ba4ldur.github.io/criador-de-sites/` (canonical, og:url, og:image e JSON-LD) no `<head>`

@@ -8,7 +8,32 @@
   <meta name="theme-color" content="#0b0c0e">
   <meta property="og:title" content="Padrão Pleno Car | Estética Automotiva">
   <meta property="og:description" content="Proteção, personalização e acabamento premium para quem exige o melhor.">
-  <meta property="og:image" content="img/hero.webp">
+  <!-- URL provisória do GitHub Pages: trocar pelo domínio definitivo -->
+  <link rel="canonical" href="https://ba4ldur.github.io/criador-de-sites/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="https://ba4ldur.github.io/criador-de-sites/">
+  <meta property="og:image" content="https://ba4ldur.github.io/criador-de-sites/img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AutoBodyShop",
+    "name": "Padrão Pleno Car",
+    "description": "Estética automotiva: PPF, Ceramic Protection, Black Piano, pintura e funilaria.",
+    "url": "https://ba4ldur.github.io/criador-de-sites/",
+    "image": "https://ba4ldur.github.io/criador-de-sites/img/og.jpg",
+    "telephone": "+55-86-98847-2024",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Rua Angélica, 1450",
+      "addressLocality": "Teresina",
+      "addressRegion": "PI",
+      "addressCountry": "BR"
+    }
+  }
+  </script>
   <link rel="preload" as="font" type="font/woff2" href="fonts/saira-condensed-latin-800-normal.woff2" crossorigin>
   <link rel="preload" as="image" href="img/hero.webp">
   <link rel="icon" type="image/png" href="img/favicon.png">
@@ -25,6 +50,7 @@
   <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-whats" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.5-.3Z"/></symbol>
   <symbol id="i-insta" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></g></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6l-8-3Z"/><path d="m8.5 12 2.5 2.5 4.5-5" stroke-linecap="round"/></g></symbol>
   <symbol id="i-diamond" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M6 4h12l4 5-10 11L2 9l4-5Z"/><path d="M2 9h20M9 4l-2 5 5 11 5-11-2-5"/></g></symbol>
@@ -79,37 +105,38 @@
 </section>
 
 <!-- SERVIÇOS -->
-<section class="servicos" id="servicos" aria-label="Serviços">
+<section class="servicos" id="servicos" aria-labelledby="servicos-titulo">
+  <h2 class="sr-only" id="servicos-titulo">Serviços</h2>
   <article class="servico">
     <img src="img/servico-ppf.webp" alt="" loading="lazy">
     <div class="servico__txt">
-      <h2>PPF</h2>
+      <h3>PPF</h3>
       <p>Proteção praticamente invisível para a pintura do seu veículo.</p>
-      <a href="#" class="saiba js-whats" data-msg="Olá! Gostaria de saber mais sobre PPF.">Saiba mais<svg><use href="#i-arrow"/></svg></a>
+      <a href="#" class="saiba js-whats" data-msg="Olá! Gostaria de um orçamento de PPF.">Orçar PPF<svg><use href="#i-arrow"/></svg></a>
     </div>
   </article>
   <article class="servico">
     <img src="img/servico-ceramic.webp" alt="" loading="lazy">
     <div class="servico__txt">
-      <h2>Ceramic<br>Protection</h2>
+      <h3>Ceramic<br>Protection</h3>
       <p>Mais brilho, profundidade e proteção de longa duração.</p>
-      <a href="#" class="saiba js-whats" data-msg="Olá! Gostaria de saber mais sobre Ceramic Protection.">Saiba mais<svg><use href="#i-arrow"/></svg></a>
+      <a href="#" class="saiba js-whats" data-msg="Olá! Gostaria de um orçamento de Ceramic Protection.">Orçar Ceramic<svg><use href="#i-arrow"/></svg></a>
     </div>
   </article>
   <article class="servico">
     <img src="img/servico-blackpiano.webp" alt="" loading="lazy">
     <div class="servico__txt">
-      <h2>Black Piano</h2>
+      <h3>Black Piano</h3>
       <p>Personalização com acabamento premium e visual único.</p>
-      <a href="#" class="saiba js-whats" data-msg="Olá! Gostaria de saber mais sobre Black Piano.">Saiba mais<svg><use href="#i-arrow"/></svg></a>
+      <a href="#" class="saiba js-whats" data-msg="Olá! Gostaria de um orçamento de Black Piano.">Orçar Black Piano<svg><use href="#i-arrow"/></svg></a>
     </div>
   </article>
   <article class="servico">
     <img src="img/servico-pintura.webp" alt="" loading="lazy">
     <div class="servico__txt">
-      <h2>Pintura<br>e Funilaria</h2>
+      <h3>Pintura<br>e Funilaria</h3>
       <p>Recuperação e pintura com padrão de qualidade Pleno Car.</p>
-      <a href="#" class="saiba js-whats" data-msg="Olá! Gostaria de saber mais sobre pintura e funilaria.">Saiba mais<svg><use href="#i-arrow"/></svg></a>
+      <a href="#" class="saiba js-whats" data-msg="Olá! Gostaria de um orçamento de pintura e funilaria.">Orçar pintura<svg><use href="#i-arrow"/></svg></a>
     </div>
   </article>
 </section>
@@ -176,13 +203,13 @@
   <div class="container stats__in">
     <div class="stat"><svg><use href="#i-insta"/></svg><p><b>14MIL+</b>Seguidores no Instagram</p></div>
     <div class="stat"><svg><use href="#i-play"/></svg><p><b>280+</b>Projetos realizados</p></div>
-    <div class="stat"><svg><use href="#i-users"/></svg><p><b>Clientes</b>em todo o Piauí e região</p></div>
     <div class="stat"><svg><use href="#i-star"/></svg><p><b>Avaliações 5.0</b>no Google</p></div>
   </div>
 </section>
 
 <!-- ANTES E DEPOIS -->
-<section class="sec antesdepois" id="antes-depois">
+<!-- Seção oculta até chegarem fotos reais de antes/depois: remova o atributo hidden -->
+<section class="sec antesdepois" id="antes-depois" hidden>
   <div class="container">
     <div class="sec__head">
       <div>
@@ -237,6 +264,9 @@
       <p class="sub">Estamos prontos para transformar o seu veículo. Faça um orçamento ou venha nos conhecer.</p>
       <ul class="contato__list">
         <li><svg><use href="#i-pin"/></svg><span><b>Rua Angélica, 1450</b>Jockey / Fátima – Teresina – PI</span></li>
+        <!-- PENDENTE: horário de funcionamento. Descomente e preencha:
+        <li><svg><use href="#i-clock"/></svg><span><b>Seg a Sex, 8h às 18h</b>Sábado, 8h às 12h</span></li>
+        -->
         <li><svg class="c-green"><use href="#i-whats"/></svg><span><a href="https://wa.me/5586988472024"><b>(86) 98847-2024</b></a>Leno Cardoso</span></li>
         <li><svg class="c-green"><use href="#i-whats"/></svg><span><a href="https://wa.me/5586999666046"><b>(86) 99966-6046</b></a>Atendimento Comercial</span></li>
       </ul>
@@ -256,9 +286,9 @@
     <p>© <span id="ano"></span> Padrão Pleno Car · Estética Automotiva · Teresina – PI</p>
     <a href="#" class="js-insta" aria-label="Instagram"><svg><use href="#i-insta"/></svg></a>
   </div>
+  <a href="#" class="whats-float js-whats" aria-label="Falar no WhatsApp"><svg><use href="#i-whats"/></svg></a>
 </footer>
 
-<a href="#" class="whats-float js-whats" aria-label="Falar no WhatsApp"><svg><use href="#i-whats"/></svg></a>
 
 <script src="js/main.js"></script>
 </body>
