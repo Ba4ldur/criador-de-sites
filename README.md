@@ -6,7 +6,7 @@ GSAP 3.15 + ScrollTrigger, Lenis 1.3.26, Saira (eixo de largura) e Inter (fontes
 ## Arquivos
 - `index.html`: página completa
 - `img/`: fotos otimizadas (WebP), logo, favicon e imagem de compartilhamento (`og.jpg`)
-- `originais/`: arquivos enviados. **Os `ia-*.png` são versões tratadas por IA e NÃO são usados no site** (regra: só fotos reais).
+- `originais/`: arquivos enviados. Topo, etapa 02 e etapa 03 usam as versões melhoradas (`ia-*`), por escolha do cliente. A `ia-fachada-NAO-USAR-numero-errado.png` não é usada (número e placa alterados).
 
 ## Comportamento
 - Lenis (rolagem suave) na página inteira; animações apenas em fotos (máscara + parallax leve) e títulos grandes.
