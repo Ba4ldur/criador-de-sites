@@ -1,0 +1,668 @@
+<title>Ponto Attivare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #eef2f0;
+    --surface: #ffffff;
+    --surface-2: #e3e9e6;
+    --ink: #15201c;
+    --muted: #5b6863;
+    --line: #cfd8d4;
+    --accent: #1d6b57;
+    --accent-ink: #ffffff;
+    --in: #1d6b57;
+    --out: #a4561a;
+    --warn: #9a3412;
+    --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --font-body: "IBM Plex Sans", "Segoe UI", Roboto, Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0f1614;
+      --surface: #17211e;
+      --surface-2: #1f2b27;
+      --ink: #e4ece8;
+      --muted: #97a6a0;
+      --line: #2c3a35;
+      --accent: #4fb596;
+      --accent-ink: #08130f;
+      --in: #5cc3a3;
+      --out: #e0955a;
+      --warn: #f08a5d;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0f1614;
+    --surface: #17211e;
+    --surface-2: #1f2b27;
+    --ink: #e4ece8;
+    --muted: #97a6a0;
+    --line: #2c3a35;
+    --accent: #4fb596;
+    --accent-ink: #08130f;
+    --in: #5cc3a3;
+    --out: #e0955a;
+    --warn: #f08a5d;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    padding-inline: 16px;
+    padding-block: 16px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  header.top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+  .who { color: var(--muted); font-size: 13px; text-align: right; }
+
+  nav.tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 4px;
+  }
+  nav.tabs button {
+    flex: 1;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font: 600 14px var(--font-body);
+    padding: 9px 8px;
+    border-radius: 7px;
+    cursor: pointer;
+  }
+  nav.tabs button[aria-selected="true"] { background: var(--surface); color: var(--ink); }
+  nav.tabs button:focus-visible, .btn:focus-visible, select:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 16px;
+  }
+
+  /* Relógio */
+  .clock { text-align: center; display: flex; flex-direction: column; gap: 4px; }
+  .clock .date {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .clock .time {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: clamp(48px, 16vw, 72px);
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .clock .time .sec { color: var(--muted); font-size: 0.45em; }
+
+  .btn {
+    border: 0;
+    border-radius: 12px;
+    font: 700 18px var(--font-display);
+    padding: 18px 16px;
+    cursor: pointer;
+    width: 100%;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-primary.is-out { background: var(--out); color: #fff; }
+  .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+  .btn-link {
+    background: none;
+    border: 0;
+    color: var(--muted);
+    font: 500 13px var(--font-body);
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--surface-2);
+  }
+  .pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+  .pill.on::before { background: var(--in); }
+  .pill.off::before { background: var(--out); }
+  .total { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 15px; }
+  .total small { color: var(--muted); font-family: var(--font-body); font-size: 12px; margin-right: 6px; }
+
+  /* Comprovante do dia */
+  .receipt { display: flex; flex-direction: column; gap: 10px; }
+  .receipt h2, .panel h2 {
+    margin: 0;
+    font: 700 13px var(--font-body);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .marks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .marks li {
+    display: grid;
+    grid-template-columns: 72px 1fr auto;
+    gap: 12px;
+    align-items: baseline;
+    padding: 8px 0;
+    border-top: 1px dashed var(--line);
+  }
+  .marks li:first-child { border-top: 0; }
+  .marks .k { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .marks .k.in { color: var(--in); }
+  .marks .k.out { color: var(--out); }
+  .marks .t { font-family: var(--font-mono); font-size: 17px; font-variant-numeric: tabular-nums; }
+  .marks .d { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .empty { color: var(--muted); font-size: 14px; margin: 0; }
+
+  .toast {
+    font-size: 14px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--surface-2);
+  }
+  .toast.err { color: var(--warn); }
+
+  /* Tabela do mês */
+  .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .controls label { font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; flex: 1 1 140px; }
+  select, input[type="month"] {
+    font: 500 15px var(--font-body);
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+    width: 100%;
+  }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  td.day { white-space: nowrap; font-weight: 600; }
+  td.day span { display: block; font-weight: 400; font-size: 12px; color: var(--muted); }
+  td.times { font-family: var(--font-mono); font-size: 13px; }
+  td.hrs { font-family: var(--font-mono); text-align: right; white-space: nowrap; }
+  th.hrs { text-align: right; }
+  tr.open td.hrs { color: var(--warn); }
+  tfoot td { font-weight: 700; border-bottom: 0; }
+  .summary { display: flex; gap: 16px; flex-wrap: wrap; }
+  .summary div { display: flex; flex-direction: column; }
+  .summary b { font-family: var(--font-mono); font-size: 22px; font-weight: 600; }
+  .summary span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .note { font-size: 12px; color: var(--muted); margin: 0; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn { transition: transform 0.08s ease; }
+    .btn:active:not([disabled]) { transform: scale(0.98); }
+  }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Ponto Attivare</div>
+    <div class="who" id="who">Conectando…</div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button id="tab-bater" role="tab" aria-selected="true" data-view="bater">Bater ponto</button>
+    <button id="tab-meus" role="tab" aria-selected="false" data-view="meus">Meus horários</button>
+    <button id="tab-equipe" role="tab" aria-selected="false" data-view="equipe" hidden>Equipe</button>
+  </nav>
+
+  <!-- Bater ponto -->
+  <section id="view-bater" class="wrap" style="padding:0">
+    <div class="panel clock">
+      <div class="date" id="clock-date">—</div>
+      <div class="time" id="clock-time">--:--<span class="sec">:--</span></div>
+    </div>
+
+    <button class="btn btn-primary" id="btn-punch" disabled>Registrar entrada</button>
+    <div id="msg" class="toast" hidden></div>
+
+    <div class="panel receipt">
+      <div class="status">
+        <h2>Hoje</h2>
+        <span class="pill" id="pill">Fora do expediente</span>
+      </div>
+      <ul class="marks" id="today-marks"></ul>
+      <p class="empty" id="today-empty">Nenhuma marcação hoje.</p>
+      <div class="status">
+        <span class="total"><small>Trabalhado hoje</small><span id="today-total">0h00</span></span>
+        <button class="btn-link" id="btn-undo" hidden>Desfazer última marcação</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Meus horários -->
+  <section id="view-meus" class="wrap" style="padding:0" hidden>
+    <div class="panel" style="display:flex;flex-direction:column;gap:14px">
+      <div class="controls">
+        <label for="mes-meus">Mês<input type="month" id="mes-meus"></label>
+      </div>
+      <div class="summary" id="sum-meus"></div>
+      <div class="table-wrap"><table id="tab-meus-tbl"></table></div>
+    </div>
+  </section>
+
+  <!-- Equipe -->
+  <section id="view-equipe" class="wrap" style="padding:0" hidden>
+    <div class="panel" style="display:flex;flex-direction:column;gap:14px">
+      <div class="controls">
+        <label for="sel-pessoa">Pessoa<select id="sel-pessoa"></select></label>
+        <label for="mes-equipe">Mês<input type="month" id="mes-equipe"></label>
+      </div>
+      <div class="summary" id="sum-equipe"></div>
+      <div class="table-wrap"><table id="tab-equipe-tbl"></table></div>
+    </div>
+    <p class="note">Aparece aqui quem já registrou ao menos uma marcação.</p>
+  </section>
+
+  <p class="note">O horário registrado é o do relógio do celular no momento da marcação.</p>
+</div>
+
+<script>
+(function () {
+  const DIAS = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+  const UNDO_MS = 2 * 60 * 1000;
+
+  const $ = (id) => document.getElementById(id);
+  const pad = (n) => String(n).padStart(2, "0");
+  const ymd = (d) => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  const ym = (d) => d.getFullYear() + "-" + pad(d.getMonth() + 1);
+  const hhmm = (ts) => { const d = new Date(ts); return pad(d.getHours()) + ":" + pad(d.getMinutes()); };
+  const fmtDur = (ms) => {
+    const m = Math.max(0, Math.round(ms / 60000));
+    return Math.floor(m / 60) + "h" + pad(m % 60);
+  };
+
+  // Soma pares entrada/saída. Um par aberto conta até "agora" só se for hoje.
+  function worked(marks, isToday) {
+    let total = 0;
+    for (let i = 0; i < marks.length; i += 2) {
+      const a = marks[i], b = marks[i + 1];
+      if (b != null) total += b - a;
+      else if (isToday) total += Date.now() - a;
+    }
+    return total;
+  }
+
+  let db = null, user = null, uid = null, isAdmin = false;
+  let myMonth = null;      // doc do mês corrente do usuário: {dias: {...}}
+  let unsubMine = null;
+  let busy = false;
+
+  // ---------- relógio ----------
+  function tick() {
+    const now = new Date();
+    $("clock-date").textContent = now.toLocaleDateString("pt-BR", { weekday: "long", day: "2-digit", month: "long", year: "numeric" });
+    $("clock-time").innerHTML = pad(now.getHours()) + ":" + pad(now.getMinutes()) + '<span class="sec">:' + pad(now.getSeconds()) + "</span>";
+    renderToday(false);
+  }
+  setInterval(tick, 1000);
+  tick();
+
+  // ---------- abas ----------
+  document.querySelectorAll("nav.tabs button").forEach((b) => {
+    b.addEventListener("click", () => showView(b.dataset.view));
+  });
+  function showView(v) {
+    document.querySelectorAll("nav.tabs button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.view === v)));
+    ["bater", "meus", "equipe"].forEach((k) => { $("view-" + k).hidden = k !== v; });
+    if (v === "meus") loadMine();
+    if (v === "equipe") loadTeam();
+  }
+
+  const thisMonth = ym(new Date());
+  $("mes-meus").value = thisMonth;
+  $("mes-equipe").value = thisMonth;
+  $("mes-meus").addEventListener("change", loadMine);
+  $("mes-equipe").addEventListener("change", loadTeamMonth);
+  $("sel-pessoa").addEventListener("change", loadTeamMonth);
+
+  function say(text, isErr) {
+    const m = $("msg");
+    m.textContent = text;
+    m.className = "toast" + (isErr ? " err" : "");
+    m.hidden = false;
+  }
+
+  // ---------- caminhos no banco ----------
+  const monthRef = (who, month) => db.doc("ponto/" + who + "/meses/" + month);
+  const personRef = (who) => db.doc("ponto/" + who);
+
+  // ---------- hoje ----------
+  function todayMarks() {
+    const dias = (myMonth && myMonth.dias) || {};
+    return (dias[ymd(new Date())] || []).slice();
+  }
+
+  function renderToday(full) {
+    const marks = todayMarks();
+    const total = worked(marks, true);
+    $("today-total").textContent = fmtDur(total);
+    if (full === false) return;
+
+    const open = marks.length % 2 === 1;
+    const pill = $("pill");
+    pill.textContent = open ? "Em expediente" : (marks.length ? "Fora do expediente" : "Sem marcações");
+    pill.className = "pill " + (open ? "on" : (marks.length ? "off" : ""));
+
+    const btn = $("btn-punch");
+    btn.textContent = open ? "Registrar saída" : "Registrar entrada";
+    btn.classList.toggle("is-out", open);
+    btn.disabled = !db || !uid || busy;
+
+    const ul = $("today-marks");
+    ul.textContent = "";
+    marks.forEach((ts, i) => {
+      const li = document.createElement("li");
+      const k = document.createElement("span");
+      const isIn = i % 2 === 0;
+      k.className = "k " + (isIn ? "in" : "out");
+      k.textContent = isIn ? "Entrada" : "Saída";
+      const t = document.createElement("span");
+      t.className = "t";
+      t.textContent = hhmm(ts);
+      const d = document.createElement("span");
+      d.className = "d";
+      d.textContent = !isIn ? fmtDur(ts - marks[i - 1]) : "";
+      li.append(k, t, d);
+      ul.appendChild(li);
+    });
+    $("today-empty").hidden = marks.length > 0;
+
+    const last = marks[marks.length - 1];
+    $("btn-undo").hidden = !(last && Date.now() - last < UNDO_MS);
+  }
+
+  async function writeMonth(next) {
+    const month = ym(new Date());
+    await monthRef(uid, month).set(next);
+    await personRef(uid).set({ uid: uid, ultimaMarcacao: Date.now() });
+  }
+
+  $("btn-punch").addEventListener("click", async () => {
+    if (!db || !uid || busy) return;
+    busy = true;
+    renderToday();
+    const now = Date.now();
+    const day = ymd(new Date(now));
+    const dias = Object.assign({}, (myMonth && myMonth.dias) || {});
+    const list = (dias[day] || []).slice();
+    // Evita toque duplo acidental.
+    if (list.length && now - list[list.length - 1] < 60 * 1000) {
+      busy = false;
+      say("Você acabou de registrar há menos de 1 minuto. Se foi engano, use “Desfazer”.", true);
+      renderToday();
+      return;
+    }
+    list.push(now);
+    dias[day] = list;
+    const next = { uid: uid, mes: ym(new Date(now)), dias: dias };
+    try {
+      await writeMonth(next);
+      myMonth = next;
+      say((list.length % 2 === 1 ? "Entrada" : "Saída") + " registrada às " + hhmm(now) + ".");
+    } catch (e) {
+      say(errText(e), true);
+    } finally {
+      busy = false;
+      renderToday();
+    }
+  });
+
+  $("btn-undo").addEventListener("click", async () => {
+    if (!db || !uid || busy) return;
+    const day = ymd(new Date());
+    const dias = Object.assign({}, (myMonth && myMonth.dias) || {});
+    const list = (dias[day] || []).slice();
+    if (!list.length || Date.now() - list[list.length - 1] >= UNDO_MS) return;
+    busy = true;
+    list.pop();
+    if (list.length) dias[day] = list; else delete dias[day];
+    const next = { uid: uid, mes: ym(new Date()), dias: dias };
+    try {
+      await writeMonth(next);
+      myMonth = next;
+      say("Última marcação desfeita.");
+    } catch (e) {
+      say(errText(e), true);
+    } finally {
+      busy = false;
+      renderToday();
+    }
+  });
+
+  function errText(e) {
+    const code = e && e.code;
+    if (code === "invalid_argument") return "Você não tem permissão para registrar ponto nesta página. Peça a quem administra para te dar acesso de Colaborador.";
+    if (code === "quota_exceeded") return "O armazenamento da página está cheio. Avise quem administra.";
+    if (code === "resource_exhausted") return "Muitas tentativas seguidas. Aguarde alguns segundos e tente de novo.";
+    return "Não foi possível salvar agora. Verifique a conexão e tente de novo.";
+  }
+
+  // ---------- tabela de mês ----------
+  function renderMonthTable(tbl, sumEl, monthStr, dias) {
+    dias = dias || {};
+    const [y, m] = monthStr.split("-").map(Number);
+    const lastDay = new Date(y, m, 0).getDate();
+    const todayStr = ymd(new Date());
+    let total = 0, daysWorked = 0, openDays = 0;
+    const rows = [];
+    for (let d = 1; d <= lastDay; d++) {
+      const key = monthStr + "-" + pad(d);
+      const marks = dias[key];
+      if (!marks || !marks.length) continue;
+      const isToday = key === todayStr;
+      const w = worked(marks, isToday);
+      const open = marks.length % 2 === 1 && !isToday;
+      total += w;
+      daysWorked++;
+      if (open) openDays++;
+      rows.push({ d, key, marks, w, open, wd: DIAS[new Date(y, m - 1, d).getDay()] });
+    }
+
+    tbl.textContent = "";
+    if (!rows.length) {
+      const tr = tbl.insertRow();
+      const td = tr.insertCell();
+      td.className = "empty";
+      td.textContent = "Nenhuma marcação neste mês.";
+      sumEl.textContent = "";
+      return;
+    }
+    const thead = tbl.createTHead().insertRow();
+    [["Dia", ""], ["Marcações", ""], ["Horas", "hrs"]].forEach(([t, c]) => {
+      const th = document.createElement("th");
+      th.textContent = t;
+      if (c) th.className = c;
+      thead.appendChild(th);
+    });
+    const tb = tbl.createTBody();
+    rows.forEach((r) => {
+      const tr = tb.insertRow();
+      if (r.open) tr.className = "open";
+      const c1 = tr.insertCell(); c1.className = "day";
+      c1.textContent = pad(r.d) + "/" + monthStr.slice(5);
+      const s = document.createElement("span"); s.textContent = r.wd; c1.appendChild(s);
+      const c2 = tr.insertCell(); c2.className = "times";
+      const pairs = [];
+      for (let i = 0; i < r.marks.length; i += 2) {
+        pairs.push(hhmm(r.marks[i]) + "–" + (r.marks[i + 1] != null ? hhmm(r.marks[i + 1]) : "?"));
+      }
+      c2.textContent = pairs.join("  ");
+      const c3 = tr.insertCell(); c3.className = "hrs";
+      c3.textContent = r.open ? fmtDur(r.w) + " *" : fmtDur(r.w);
+    });
+    const tf = tbl.createTFoot().insertRow();
+    const f1 = tf.insertCell(); f1.textContent = "Total"; f1.colSpan = 2;
+    const f2 = tf.insertCell(); f2.className = "hrs"; f2.textContent = fmtDur(total);
+
+    sumEl.textContent = "";
+    [[fmtDur(total), "horas no mês"], [String(daysWorked), "dias com marcação"], [String(openDays), "dias sem saída"]].forEach(([v, l]) => {
+      const div = document.createElement("div");
+      const b = document.createElement("b"); b.textContent = v;
+      const sp = document.createElement("span"); sp.textContent = l;
+      div.append(b, sp);
+      sumEl.appendChild(div);
+    });
+    if (openDays) {
+      const p = document.createElement("p");
+      p.className = "note";
+      p.style.flexBasis = "100%";
+      p.textContent = "* Dia sem marcação de saída: as horas desse dia contam só até a última entrada completa.";
+      sumEl.appendChild(p);
+    }
+  }
+
+  async function loadMine() {
+    const month = $("mes-meus").value || thisMonth;
+    if (!db || !uid) { renderMonthTable($("tab-meus-tbl"), $("sum-meus"), month, {}); return; }
+    if (month === thisMonth && myMonth) {
+      renderMonthTable($("tab-meus-tbl"), $("sum-meus"), month, myMonth.dias);
+      return;
+    }
+    try {
+      const snap = await monthRef(uid, month).get();
+      renderMonthTable($("tab-meus-tbl"), $("sum-meus"), month, snap.exists ? snap.data().dias : {});
+    } catch (e) {
+      renderMonthTable($("tab-meus-tbl"), $("sum-meus"), month, {});
+    }
+  }
+
+  // ---------- equipe (admin) ----------
+  let teamLoaded = false;
+  async function loadTeam() {
+    if (!isAdmin || !db) return;
+    if (!teamLoaded) {
+      teamLoaded = true;
+      db.collection("ponto").onSnapshot(async (snap) => {
+        const ids = snap.docs.map((d) => d.id);
+        const sel = $("sel-pessoa");
+        const prev = sel.value;
+        let names = {};
+        try { names = await user.profiles(ids); } catch (e) { names = {}; }
+        const opts = ids.map((id) => ({ id, name: (names[id] && names[id].name) || "Pessoa sem nome (" + id.slice(-4) + ")" }))
+          .sort((a, b) => a.name.localeCompare(b.name, "pt-BR"));
+        sel.textContent = "";
+        opts.forEach((o) => {
+          const op = document.createElement("option");
+          op.value = o.id;
+          op.textContent = o.name + (o.id === uid ? " (você)" : "");
+          sel.appendChild(op);
+        });
+        if (!opts.length) {
+          const op = document.createElement("option");
+          op.textContent = "Ninguém registrou ponto ainda";
+          op.value = "";
+          sel.appendChild(op);
+        }
+        if (prev && ids.includes(prev)) sel.value = prev;
+        loadTeamMonth();
+      }, () => {});
+    } else {
+      loadTeamMonth();
+    }
+  }
+
+  async function loadTeamMonth() {
+    const who = $("sel-pessoa").value;
+    const month = $("mes-equipe").value || thisMonth;
+    if (!who) { renderMonthTable($("tab-equipe-tbl"), $("sum-equipe"), month, {}); return; }
+    try {
+      const snap = await monthRef(who, month).get();
+      renderMonthTable($("tab-equipe-tbl"), $("sum-equipe"), month, snap.exists ? snap.data().dias : {});
+    } catch (e) {
+      renderMonthTable($("tab-equipe-tbl"), $("sum-equipe"), month, {});
+    }
+  }
+
+  // ---------- inicialização ----------
+  renderToday();
+  loadMine();
+
+  (async function start() {
+    if (!window.claude || !window.claude.use) {
+      $("who").textContent = "Abra pelo link do Claude";
+      say("Esta página precisa ser aberta pelo link do claude.ai para registrar o ponto.", true);
+      return;
+    }
+    const [dbNs, userNs] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+    db = dbNs; user = userNs;
+    if (!db || !user) {
+      $("who").textContent = "Sem acesso";
+      say("Não foi possível conectar ao banco de dados desta página.", true);
+      return;
+    }
+    uid = await user.id();
+    const me = await user.me();
+    $("who").textContent = me.name || "Você";
+    isAdmin = await user.canEdit();
+    $("tab-equipe").hidden = !isAdmin;
+
+    if (!uid) {
+      say("Entre na sua conta do Claude para registrar o ponto.", true);
+      renderToday();
+      return;
+    }
+    const canWrite = await user.can("data.write");
+    if (canWrite === false) {
+      say("Seu acesso é só de leitura. Peça a quem administra para te dar acesso de Colaborador.", true);
+    }
+
+    unsubMine = monthRef(uid, thisMonth).onSnapshot((snap) => {
+      if (busy) return;
+      myMonth = snap.exists ? snap.data() : { dias: {} };
+      renderToday();
+      if (!$("view-meus").hidden) loadMine();
+    }, () => {});
+    renderToday();
+  })();
+})();
+</script>
