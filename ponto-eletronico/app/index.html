@@ -1,0 +1,977 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d6b57">
+<meta name="robots" content="noindex">
+<title>Ponto Attivare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #eef2f0;
+    --surface: #ffffff;
+    --surface-2: #e3e9e6;
+    --ink: #15201c;
+    --muted: #5b6863;
+    --line: #cfd8d4;
+    --accent: #1d6b57;
+    --accent-ink: #ffffff;
+    --in: #1d6b57;
+    --out: #a4561a;
+    --out-ink: #ffffff;
+    --warn: #9a3412;
+    --ok: #1d6b57;
+    --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --font-body: "IBM Plex Sans", "Segoe UI", Roboto, Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --bg: #0f1614;
+      --surface: #17211e;
+      --surface-2: #1f2b27;
+      --ink: #e4ece8;
+      --muted: #97a6a0;
+      --line: #2c3a35;
+      --accent: #4fb596;
+      --accent-ink: #08130f;
+      --in: #5cc3a3;
+      --out: #e0955a;
+      --out-ink: #1a0d03;
+      --warn: #f08a5d;
+      --ok: #5cc3a3;
+    }
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding-inline: 16px;
+    padding-block: 16px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+
+  header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand { font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
+  .who { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; text-align: right; }
+
+  nav.tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 4px;
+    overflow-x: auto;
+  }
+  nav.tabs button {
+    flex: 1 0 auto;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font: 600 14px var(--font-body);
+    padding: 9px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  nav.tabs button[aria-selected="true"] { background: var(--surface); color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  h1, h2 { margin: 0; }
+  .panel h2 {
+    font: 700 13px var(--font-body);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .lead { margin: 0; color: var(--muted); }
+
+  /* Relógio */
+  .clock { text-align: center; gap: 4px; }
+  .clock .date { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .clock .time {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: clamp(48px, 16vw, 72px);
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .clock .time .sec { color: var(--muted); font-size: 0.45em; }
+  .clock .place { font-size: 13px; color: var(--muted); }
+
+  .btn {
+    border: 0;
+    border-radius: 12px;
+    font: 700 16px var(--font-display);
+    padding: 12px 16px;
+    cursor: pointer;
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-big { width: 100%; font-size: 19px; padding: 20px 16px; }
+  .btn-big.is-out { background: var(--out); color: var(--out-ink); }
+  .btn[disabled] { opacity: 0.55; cursor: not-allowed; }
+  .btn-link {
+    background: none; border: 0; color: var(--muted);
+    font: 500 13px var(--font-body); text-decoration: underline; cursor: pointer; padding: 4px;
+  }
+  .btn-small { font: 600 13px var(--font-body); padding: 6px 10px; border-radius: 8px; }
+
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--surface-2);
+  }
+  .pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+  .pill.on::before { background: var(--in); }
+  .pill.off::before { background: var(--out); }
+  .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .total small { color: var(--muted); font-family: var(--font-body); font-size: 12px; margin-right: 6px; }
+
+  .marks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .marks li {
+    display: grid; grid-template-columns: 72px 1fr auto; gap: 12px; align-items: baseline;
+    padding: 8px 0; border-top: 1px dashed var(--line);
+  }
+  .marks li:first-child { border-top: 0; }
+  .k { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .k.in { color: var(--in); }
+  .k.out { color: var(--out); }
+  .marks .t { font-family: var(--font-mono); font-size: 17px; font-variant-numeric: tabular-nums; }
+  .marks .d { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .empty { color: var(--muted); font-size: 14px; margin: 0; }
+
+  .toast { font-size: 14px; padding: 10px 12px; border-radius: 8px; background: var(--surface-2); margin: 0; }
+  .toast.err { color: var(--warn); }
+  .toast.ok { color: var(--ok); }
+
+  /* Formulários */
+  .form { display: flex; flex-direction: column; gap: 12px; }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  label.f { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
+  label.check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink); }
+  input[type="text"], input[type="password"], input[type="number"], input[type="month"],
+  input[type="date"], input[type="time"], select {
+    font: 500 16px var(--font-body);
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 12px;
+    width: 100%;
+    min-width: 0;
+  }
+  input.pin { font-family: var(--font-mono); letter-spacing: 0.3em; }
+
+  /* Tabelas */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  td.day { white-space: nowrap; font-weight: 600; }
+  td.day span { display: block; font-weight: 400; font-size: 12px; color: var(--muted); }
+  td.times { font-family: var(--font-mono); font-size: 13px; }
+  td.hrs, th.hrs { text-align: right; white-space: nowrap; }
+  td.hrs { font-family: var(--font-mono); }
+  tr.open td.hrs { color: var(--warn); }
+  tfoot td { font-weight: 700; border-bottom: 0; }
+  .adj { color: var(--warn); font-size: 11px; font-family: var(--font-body); vertical-align: super; }
+  .summary { display: flex; gap: 20px; flex-wrap: wrap; }
+  .summary div { display: flex; flex-direction: column; }
+  .summary b { font-family: var(--font-mono); font-size: 22px; font-weight: 600; }
+  .summary span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .note { font-size: 12px; color: var(--muted); margin: 0; }
+
+  .detail { list-style: none; margin: 0; padding: 0; }
+  .detail li {
+    display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center;
+    padding: 8px 0; border-top: 1px solid var(--line);
+  }
+  .detail .meta { font-size: 12px; color: var(--muted); }
+
+  .people { list-style: none; margin: 0; padding: 0; }
+  .people li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .people li:first-child { border-top: 0; }
+  .people .tag { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-left: 6px; }
+
+  .login { max-width: 380px; margin: 8vh auto 0; width: 100%; }
+  .login .brand { font-size: 28px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn { transition: transform 0.08s ease; }
+    .btn:active:not([disabled]) { transform: scale(0.98); }
+  }
+</style>
+<script src="config.js"></script>
+</head>
+<body>
+
+<!-- Login -->
+<main class="wrap" id="scr-login" hidden>
+  <div class="login stack">
+    <div>
+      <div class="brand">Ponto Attivare</div>
+      <p class="lead">Entre com o código e o PIN que você recebeu.</p>
+    </div>
+    <form class="panel form" id="frm-login" autocomplete="on">
+      <label class="f" for="in-codigo">Código
+        <input type="text" id="in-codigo" autocapitalize="characters" autocomplete="username" required maxlength="20">
+      </label>
+      <label class="f" for="in-pin">PIN
+        <input type="password" id="in-pin" class="pin" inputmode="numeric" pattern="[0-9]*" autocomplete="current-password" required maxlength="8">
+      </label>
+      <button class="btn btn-primary" type="submit" id="btn-login">Entrar</button>
+      <p class="toast err" id="msg-login" hidden></p>
+    </form>
+  </div>
+</main>
+
+<!-- App -->
+<main class="wrap" id="scr-app" hidden>
+  <header class="top">
+    <div class="brand">Ponto Attivare</div>
+    <div class="who"><span id="who-name"></span><button class="btn-link" id="btn-logout">Sair</button></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-view="ponto" aria-selected="true">Ponto</button>
+    <button role="tab" data-view="meus" aria-selected="false">Meus horários</button>
+    <button role="tab" data-view="equipe" aria-selected="false" class="adm" hidden>Equipe</button>
+    <button role="tab" data-view="pessoas" aria-selected="false" class="adm" hidden>Funcionários</button>
+    <button role="tab" data-view="local" aria-selected="false" class="adm" hidden>Local</button>
+  </nav>
+
+  <!-- Ponto -->
+  <section class="stack" id="view-ponto">
+    <div class="panel clock">
+      <div class="date" id="clock-date">—</div>
+      <div class="time" id="clock-time">--:--<span class="sec">:--</span></div>
+      <div class="place" id="clock-place"></div>
+    </div>
+    <button class="btn btn-big btn-primary" id="btn-punch" disabled>Registrar entrada</button>
+    <p class="toast" id="msg-ponto" hidden></p>
+    <div class="panel">
+      <div class="row">
+        <h2>Hoje</h2>
+        <span class="pill" id="pill">Sem marcações</span>
+      </div>
+      <ul class="marks" id="today-marks"></ul>
+      <p class="empty" id="today-empty">Nenhuma marcação hoje.</p>
+      <div class="row">
+        <span class="total mono"><small>Trabalhado hoje</small><span id="today-total">0h00</span></span>
+        <button class="btn-link" id="btn-undo" hidden>Desfazer última marcação</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Meus horários -->
+  <section class="stack" id="view-meus" hidden>
+    <div class="panel">
+      <label class="f" for="mes-meus">Mês<input type="month" id="mes-meus"></label>
+      <div class="summary" id="sum-meus"></div>
+      <div class="table-wrap"><table id="tbl-meus"></table></div>
+    </div>
+  </section>
+
+  <!-- Equipe (admin) -->
+  <section class="stack" id="view-equipe" hidden>
+    <div class="panel">
+      <div class="grid2">
+        <label class="f" for="sel-pessoa">Pessoa<select id="sel-pessoa"></select></label>
+        <label class="f" for="mes-equipe">Mês<input type="month" id="mes-equipe"></label>
+      </div>
+      <div class="summary" id="sum-equipe"></div>
+      <div class="table-wrap"><table id="tbl-equipe"></table></div>
+      <div class="row">
+        <button class="btn btn-small" id="btn-csv">Exportar mês (CSV)</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Marcações do mês</h2>
+      <p class="note">Marcações não são apagadas. Anular exige um motivo e fica registrado.</p>
+      <ul class="detail" id="det-equipe"></ul>
+    </div>
+
+    <form class="panel form" id="frm-incluir">
+      <h2>Incluir marcação esquecida</h2>
+      <div class="grid2">
+        <label class="f" for="inc-data">Data<input type="date" id="inc-data" required></label>
+        <label class="f" for="inc-hora">Hora<input type="time" id="inc-hora" required></label>
+      </div>
+      <label class="f" for="inc-motivo">Motivo<input type="text" id="inc-motivo" required maxlength="200" placeholder="Ex.: esqueceu de registrar a saída"></label>
+      <button class="btn btn-primary" type="submit">Incluir</button>
+      <p class="toast" id="msg-incluir" hidden></p>
+    </form>
+  </section>
+
+  <!-- Funcionários (admin) -->
+  <section class="stack" id="view-pessoas" hidden>
+    <div class="panel">
+      <div class="row">
+        <h2>Funcionários</h2>
+        <button class="btn btn-small" id="btn-novo">Novo funcionário</button>
+      </div>
+      <ul class="people" id="lst-pessoas"></ul>
+    </div>
+    <form class="panel form" id="frm-pessoa" hidden>
+      <h2 id="frm-pessoa-titulo">Novo funcionário</h2>
+      <div class="grid2">
+        <label class="f" for="p-codigo">Código<input type="text" id="p-codigo" required maxlength="20" autocapitalize="characters"></label>
+        <label class="f" for="p-pin">PIN (4 a 8 números)<input type="password" id="p-pin" class="pin" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="new-password"></label>
+      </div>
+      <label class="f" for="p-nome">Nome<input type="text" id="p-nome" required maxlength="80"></label>
+      <p class="note" id="p-pin-nota" hidden>Deixe o PIN em branco para manter o atual.</p>
+      <label class="check" for="p-admin"><input type="checkbox" id="p-admin"> Administrador (vê a equipe e faz ajustes)</label>
+      <label class="check" for="p-ativo"><input type="checkbox" id="p-ativo" checked> Ativo (pode entrar e registrar ponto)</label>
+      <div class="row">
+        <button class="btn btn-primary" type="submit">Salvar</button>
+        <button class="btn-link" type="button" id="btn-cancelar-pessoa">Cancelar</button>
+      </div>
+      <p class="toast" id="msg-pessoa" hidden></p>
+    </form>
+  </section>
+
+  <!-- Local / cerca virtual (admin) -->
+  <section class="stack" id="view-local" hidden>
+    <form class="panel form" id="frm-local">
+      <h2>Local de trabalho</h2>
+      <p class="lead" id="local-status"></p>
+      <label class="f" for="l-nome">Nome do local<input type="text" id="l-nome" maxlength="80" placeholder="Ex.: Escritório Attivare"></label>
+      <div class="grid2">
+        <label class="f" for="l-lat">Latitude<input type="text" id="l-lat" inputmode="decimal"></label>
+        <label class="f" for="l-lng">Longitude<input type="text" id="l-lng" inputmode="decimal"></label>
+      </div>
+      <label class="f" for="l-raio">Raio permitido (metros)<input type="number" id="l-raio" min="20" max="5000" step="10" required></label>
+      <button class="btn" type="button" id="btn-aqui">Usar minha localização atual</button>
+      <p class="note">Use este botão estando dentro do escritório. Deixe latitude e longitude em branco para desligar a cerca virtual.</p>
+      <button class="btn btn-primary" type="submit">Salvar local</button>
+      <p class="toast" id="msg-local" hidden></p>
+    </form>
+  </section>
+
+  <p class="note">O horário de cada marcação é o do servidor, não o do celular.</p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  const CFG = window.PONTO_CONFIG || {};
+  const TOKEN_KEY = "ponto_token";
+  const DIAS = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+  const UNDO_MS = 2 * 60 * 1000;
+
+  const $ = (id) => document.getElementById(id);
+  const pad = (n) => String(n).padStart(2, "0");
+
+  // ---------- armazenamento local (só o token de sessão) ----------
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+  };
+
+  // ---------- API (funções RPC do Supabase) ----------
+  class ApiError extends Error {}
+  async function rpc(fn, args) {
+    if (!CFG.SUPABASE_URL || /SEU-PROJETO/.test(CFG.SUPABASE_URL)) {
+      throw new ApiError("O app ainda não foi configurado. Preencha o arquivo config.js.");
+    }
+    const headers = { "Content-Type": "application/json", apikey: CFG.SUPABASE_KEY };
+    if (/^eyJ/.test(CFG.SUPABASE_KEY || "")) headers.Authorization = "Bearer " + CFG.SUPABASE_KEY;
+    let res;
+    try {
+      res = await fetch(CFG.SUPABASE_URL.replace(/\/$/, "") + "/rest/v1/rpc/" + fn, {
+        method: "POST", headers, body: JSON.stringify(args || {}),
+      });
+    } catch (e) {
+      throw new ApiError("Sem conexão com o servidor. Verifique a internet e tente de novo.");
+    }
+    const text = await res.text();
+    let body = null;
+    try { body = text ? JSON.parse(text) : null; } catch (e) { body = null; }
+    if (!res.ok) {
+      const msg = (body && body.message) || "Erro no servidor (" + res.status + ").";
+      if (/Sessão expirada/.test(msg)) { logout(false); }
+      throw new ApiError(msg);
+    }
+    return body;
+  }
+
+  let token = store.get(TOKEN_KEY);
+  let me = null;              // {nome, codigo, admin, fuso, cerca, nome_local, raio_m}
+  let hoje = [];              // marcações de hoje
+  let serverOffset = 0;       // ms: relógio do servidor - relógio do celular
+  let busy = false;
+
+  const fuso = () => (me && me.fuso) || "America/Sao_Paulo";
+  const serverNow = () => new Date(Date.now() + serverOffset);
+  const syncClock = (iso) => { if (iso) serverOffset = new Date(iso).getTime() - Date.now(); };
+
+  // Partes de data/hora no fuso da empresa.
+  function parts(d) {
+    const p = {};
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: fuso(), year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23",
+    }).formatToParts(d).forEach((x) => { p[x.type] = x.value; });
+    return p;
+  }
+  const hhmm = (iso) => { const p = parts(new Date(iso)); return p.hour + ":" + p.minute; };
+  const ymd = (d) => { const p = parts(d); return p.year + "-" + p.month + "-" + p.day; };
+  const ym = (d) => ymd(d).slice(0, 7);
+  const fmtDur = (ms) => { const m = Math.max(0, Math.round(ms / 60000)); return Math.floor(m / 60) + "h" + pad(m % 60); };
+
+  // Soma pares entrada/saída de um dia. Par aberto conta até agora só se for hoje.
+  function worked(marks, isToday) {
+    let total = 0;
+    for (let i = 0; i < marks.length; i += 2) {
+      const a = new Date(marks[i].momento).getTime();
+      if (marks[i + 1]) total += new Date(marks[i + 1].momento).getTime() - a;
+      else if (isToday) total += serverNow().getTime() - a;
+    }
+    return total;
+  }
+
+  function say(el, text, kind) {
+    el.textContent = text;
+    el.className = "toast" + (kind ? " " + kind : "");
+    el.hidden = !text;
+  }
+
+  // ---------- telas ----------
+  function showLogin() {
+    $("scr-app").hidden = true;
+    $("scr-login").hidden = false;
+    $("in-codigo").value = store.get("ponto_codigo") || "";
+    ($("in-codigo").value ? $("in-pin") : $("in-codigo")).focus();
+  }
+  function showApp() {
+    $("scr-login").hidden = true;
+    $("scr-app").hidden = false;
+    $("who-name").textContent = me.nome;
+    document.querySelectorAll(".adm").forEach((b) => { b.hidden = !me.admin; });
+    $("clock-place").textContent = me.cerca
+      ? "Registro permitido em " + (me.nome_local || "local de trabalho") + " (até " + me.raio_m + " m)"
+      : "";
+    renderToday();
+  }
+
+  $("frm-login").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const btn = $("btn-login");
+    btn.disabled = true;
+    say($("msg-login"), "");
+    try {
+      const r = await rpc("entrar", { p_codigo: $("in-codigo").value, p_pin: $("in-pin").value });
+      if (r && r.erro) { say($("msg-login"), r.erro, "err"); return; }
+      token = r.token;
+      store.set(TOKEN_KEY, token);
+      store.set("ponto_codigo", $("in-codigo").value.trim().toUpperCase());
+      $("in-pin").value = "";
+      await loadSituacao();
+    } catch (e) {
+      say($("msg-login"), e.message, "err");
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  function logout(callServer) {
+    if (callServer !== false && token) rpc("sair", { p_token: token }).catch(() => {});
+    token = null; me = null; hoje = [];
+    store.del(TOKEN_KEY);
+    showLogin();
+  }
+  $("btn-logout").addEventListener("click", () => logout(true));
+
+  async function loadSituacao() {
+    const s = await rpc("situacao", { p_token: token });
+    me = s;
+    syncClock(s.agora);
+    hoje = s.hoje || [];
+    showApp();
+    showView("ponto");
+  }
+
+  // ---------- abas ----------
+  document.querySelectorAll("nav.tabs button").forEach((b) => b.addEventListener("click", () => showView(b.dataset.view)));
+  function showView(v) {
+    document.querySelectorAll("nav.tabs button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.view === v)));
+    ["ponto", "meus", "equipe", "pessoas", "local"].forEach((k) => { $("view-" + k).hidden = k !== v; });
+    if (v === "meus") loadMine();
+    if (v === "equipe") loadTeam();
+    if (v === "pessoas") loadPeople();
+    if (v === "local") loadLocal();
+  }
+
+  // ---------- relógio ----------
+  function tick() {
+    const now = serverNow();
+    const p = parts(now);
+    $("clock-date").textContent = now.toLocaleDateString("pt-BR", { timeZone: fuso(), weekday: "long", day: "2-digit", month: "long", year: "numeric" });
+    $("clock-time").innerHTML = p.hour + ":" + p.minute + '<span class="sec">:' + p.second + "</span>";
+    if (me) {
+      $("today-total").textContent = fmtDur(worked(hoje, true));
+      const last = hoje[hoje.length - 1];
+      $("btn-undo").hidden = !(last && last.origem === "app" && serverNow() - new Date(last.momento) < UNDO_MS);
+    }
+  }
+  setInterval(tick, 1000);
+  tick();
+
+  // ---------- hoje ----------
+  function renderToday() {
+    const open = hoje.length % 2 === 1;
+    const pill = $("pill");
+    pill.textContent = open ? "Em expediente" : (hoje.length ? "Fora do expediente" : "Sem marcações");
+    pill.className = "pill " + (open ? "on" : (hoje.length ? "off" : ""));
+    const btn = $("btn-punch");
+    btn.textContent = open ? "Registrar saída" : "Registrar entrada";
+    btn.classList.toggle("is-out", open);
+    btn.disabled = busy || !me;
+
+    const ul = $("today-marks");
+    ul.textContent = "";
+    hoje.forEach((m, i) => {
+      const li = document.createElement("li");
+      const k = document.createElement("span");
+      const isIn = m.tipo === "entrada";
+      k.className = "k " + (isIn ? "in" : "out");
+      k.textContent = isIn ? "Entrada" : "Saída";
+      const t = document.createElement("span");
+      t.className = "t";
+      t.textContent = hhmm(m.momento);
+      if (m.origem === "ajuste") t.appendChild(adjMark(m.motivo));
+      const d = document.createElement("span");
+      d.className = "d";
+      d.textContent = !isIn && hoje[i - 1] ? fmtDur(new Date(m.momento) - new Date(hoje[i - 1].momento)) : "";
+      li.append(k, t, d);
+      ul.appendChild(li);
+    });
+    $("today-empty").hidden = hoje.length > 0;
+    tick();
+  }
+
+  function adjMark(motivo) {
+    const s = document.createElement("span");
+    s.className = "adj";
+    s.textContent = " ajuste";
+    s.title = motivo || "";
+    return s;
+  }
+
+  function getPosition() {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) { reject(new ApiError("Este navegador não informa a localização.")); return; }
+      navigator.geolocation.getCurrentPosition(
+        (p) => resolve(p.coords),
+        (err) => {
+          if (err.code === 1) reject(new ApiError("A localização está bloqueada. Libere o acesso à localização para este site nas configurações do navegador e tente de novo."));
+          else reject(new ApiError("Não foi possível obter sua localização. Verifique se o GPS está ligado e tente de novo."));
+        },
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
+      );
+    });
+  }
+
+  $("btn-punch").addEventListener("click", async () => {
+    if (busy) return;
+    busy = true;
+    renderToday();
+    const msg = $("msg-ponto");
+    try {
+      let lat = null, lng = null, acc = null;
+      if (me.cerca) {
+        say(msg, "Obtendo sua localização…");
+        const c = await getPosition();
+        lat = c.latitude; lng = c.longitude; acc = c.accuracy;
+      }
+      say(msg, "Registrando…");
+      const r = await rpc("registrar", { p_token: token, p_lat: lat, p_lng: lng, p_precisao: acc });
+      syncClock(r.agora);
+      hoje = r.hoje || [];
+      const last = hoje[hoje.length - 1];
+      say(msg, (last.tipo === "entrada" ? "Entrada" : "Saída") + " registrada às " + hhmm(last.momento) + ".", "ok");
+    } catch (e) {
+      say(msg, e.message, "err");
+    } finally {
+      busy = false;
+      renderToday();
+    }
+  });
+
+  $("btn-undo").addEventListener("click", async () => {
+    if (busy) return;
+    busy = true;
+    try {
+      const r = await rpc("desfazer", { p_token: token });
+      syncClock(r.agora);
+      hoje = r.hoje || [];
+      say($("msg-ponto"), "Última marcação desfeita.", "ok");
+    } catch (e) {
+      say($("msg-ponto"), e.message, "err");
+    } finally {
+      busy = false;
+      renderToday();
+    }
+  });
+
+  // ---------- tabela do mês ----------
+  function groupByDay(marks) {
+    const g = {};
+    marks.forEach((m) => { (g[m.dia] = g[m.dia] || []).push(m); });
+    return g;
+  }
+
+  function renderMonth(tbl, sumEl, monthStr, marks) {
+    const byDay = groupByDay(marks);
+    const [y, mo] = monthStr.split("-").map(Number);
+    const lastDay = new Date(y, mo, 0).getDate();
+    const todayStr = ymd(serverNow());
+    let total = 0, daysWorked = 0, openDays = 0;
+    const rows = [];
+    for (let d = 1; d <= lastDay; d++) {
+      const key = monthStr + "-" + pad(d);
+      const dm = byDay[key];
+      if (!dm || !dm.length) continue;
+      const isToday = key === todayStr;
+      const w = worked(dm, isToday);
+      const open = dm.length % 2 === 1 && !isToday;
+      total += w; daysWorked++; if (open) openDays++;
+      rows.push({ d, dm, w, open, wd: DIAS[new Date(y, mo - 1, d).getDay()] });
+    }
+
+    tbl.textContent = "";
+    sumEl.textContent = "";
+    if (!rows.length) {
+      const td = tbl.insertRow().insertCell();
+      td.className = "empty";
+      td.textContent = "Nenhuma marcação neste mês.";
+      return { total: 0, rows };
+    }
+    const h = tbl.createTHead().insertRow();
+    [["Dia", ""], ["Entradas e saídas", ""], ["Horas", "hrs"]].forEach(([t, c]) => {
+      const th = document.createElement("th"); th.textContent = t; if (c) th.className = c; h.appendChild(th);
+    });
+    const tb = tbl.createTBody();
+    rows.forEach((r) => {
+      const tr = tb.insertRow();
+      if (r.open) tr.className = "open";
+      const c1 = tr.insertCell(); c1.className = "day";
+      c1.textContent = pad(r.d) + "/" + monthStr.slice(5);
+      const s = document.createElement("span"); s.textContent = r.wd; c1.appendChild(s);
+      const c2 = tr.insertCell(); c2.className = "times";
+      for (let i = 0; i < r.dm.length; i += 2) {
+        const span = document.createElement("div");
+        span.textContent = hhmm(r.dm[i].momento) + " – " + (r.dm[i + 1] ? hhmm(r.dm[i + 1].momento) : "?");
+        if (r.dm[i].origem === "ajuste" || (r.dm[i + 1] && r.dm[i + 1].origem === "ajuste")) span.appendChild(adjMark());
+        c2.appendChild(span);
+      }
+      const c3 = tr.insertCell(); c3.className = "hrs";
+      c3.textContent = fmtDur(r.w) + (r.open ? " *" : "");
+    });
+    const tf = tbl.createTFoot().insertRow();
+    const f1 = tf.insertCell(); f1.colSpan = 2; f1.textContent = "Total";
+    const f2 = tf.insertCell(); f2.className = "hrs"; f2.textContent = fmtDur(total);
+
+    [[fmtDur(total), "horas no mês"], [String(daysWorked), "dias com marcação"], [String(openDays), "dias sem saída"]].forEach(([v, l]) => {
+      const div = document.createElement("div");
+      const b = document.createElement("b"); b.textContent = v;
+      const sp = document.createElement("span"); sp.textContent = l;
+      div.append(b, sp); sumEl.appendChild(div);
+    });
+    if (openDays) {
+      const p = document.createElement("p");
+      p.className = "note"; p.style.flexBasis = "100%";
+      p.textContent = "* Dia sem marcação de saída: conta só os períodos completos.";
+      sumEl.appendChild(p);
+    }
+    return { total, rows };
+  }
+
+  $("mes-meus").addEventListener("change", loadMine);
+  async function loadMine() {
+    if (!$("mes-meus").value) $("mes-meus").value = ym(serverNow());
+    const mes = $("mes-meus").value;
+    try {
+      const marks = await rpc("meus_horarios", { p_token: token, p_mes: mes });
+      renderMonth($("tbl-meus"), $("sum-meus"), mes, marks || []);
+    } catch (e) {
+      $("sum-meus").textContent = e.message;
+    }
+  }
+
+  // ---------- equipe ----------
+  let pessoas = [];
+  let equipeMarks = [];
+  $("sel-pessoa").addEventListener("change", loadTeamMonth);
+  $("mes-equipe").addEventListener("change", loadTeamMonth);
+
+  async function loadTeam() {
+    if (!$("mes-equipe").value) $("mes-equipe").value = ym(serverNow());
+    try {
+      pessoas = await rpc("admin_funcionarios", { p_token: token });
+    } catch (e) {
+      $("sum-equipe").textContent = e.message; return;
+    }
+    const sel = $("sel-pessoa");
+    const prev = sel.value;
+    sel.textContent = "";
+    pessoas.forEach((p) => {
+      const o = document.createElement("option");
+      o.value = p.id;
+      o.textContent = p.nome + " (" + p.codigo + ")" + (p.ativo ? "" : " — inativo");
+      sel.appendChild(o);
+    });
+    if (prev && pessoas.some((p) => p.id === prev)) sel.value = prev;
+    loadTeamMonth();
+  }
+
+  async function loadTeamMonth() {
+    const who = $("sel-pessoa").value;
+    const mes = $("mes-equipe").value || ym(serverNow());
+    if (!who) return;
+    try {
+      equipeMarks = await rpc("admin_marcacoes", { p_token: token, p_funcionario: who, p_mes: mes }) || [];
+    } catch (e) {
+      $("sum-equipe").textContent = e.message; return;
+    }
+    renderMonth($("tbl-equipe"), $("sum-equipe"), mes, equipeMarks);
+    renderDetail();
+    if (!$("inc-data").value) $("inc-data").value = ymd(serverNow());
+  }
+
+  function renderDetail() {
+    const ul = $("det-equipe");
+    ul.textContent = "";
+    if (!equipeMarks.length) {
+      const li = document.createElement("li");
+      li.className = "empty"; li.textContent = "Nenhuma marcação neste mês.";
+      ul.appendChild(li); return;
+    }
+    equipeMarks.forEach((m) => {
+      const li = document.createElement("li");
+      const info = document.createElement("div");
+      const top = document.createElement("div");
+      const [yy, mm, dd] = m.dia.split("-");
+      top.innerHTML = '<span class="mono"></span> <span class="k"></span>';
+      top.children[0].textContent = dd + "/" + mm + " " + hhmm(m.momento);
+      top.children[1].textContent = m.tipo === "entrada" ? "Entrada" : "Saída";
+      top.children[1].className = "k " + (m.tipo === "entrada" ? "in" : "out");
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.textContent = m.origem === "ajuste"
+        ? "Incluída pelo administrador: " + (m.motivo || "")
+        : (m.distancia_m != null ? "Pelo app, a " + m.distancia_m + " m do local" : "Pelo app");
+      info.append(top, meta);
+      const b = document.createElement("button");
+      b.className = "btn btn-small"; b.type = "button"; b.textContent = "Anular";
+      b.addEventListener("click", () => anular(m));
+      li.append(info, b);
+      ul.appendChild(li);
+    });
+  }
+
+  async function anular(m) {
+    const motivo = window.prompt("Motivo para anular a marcação de " + hhmm(m.momento) + ":");
+    if (motivo == null) return;
+    try {
+      await rpc("admin_anular", { p_token: token, p_marcacao: m.id, p_motivo: motivo });
+      await loadTeamMonth();
+    } catch (e) {
+      window.alert(e.message);
+    }
+  }
+
+  $("frm-incluir").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const who = $("sel-pessoa").value;
+    try {
+      await rpc("admin_incluir", {
+        p_token: token, p_funcionario: who,
+        p_momento: $("inc-data").value + " " + $("inc-hora").value,
+        p_motivo: $("inc-motivo").value,
+      });
+      say($("msg-incluir"), "Marcação incluída.", "ok");
+      $("inc-hora").value = ""; $("inc-motivo").value = "";
+      const mesInc = $("inc-data").value.slice(0, 7);
+      if (mesInc !== $("mes-equipe").value) $("mes-equipe").value = mesInc;
+      await loadTeamMonth();
+    } catch (e) {
+      say($("msg-incluir"), e.message, "err");
+    }
+  });
+
+  $("btn-csv").addEventListener("click", () => {
+    const p = pessoas.find((x) => x.id === $("sel-pessoa").value);
+    const mes = $("mes-equipe").value;
+    if (!p) return;
+    const byDay = groupByDay(equipeMarks);
+    const lines = [["codigo", "nome", "data", "marcacoes", "horas_trabalhadas", "minutos"].join(";")];
+    Object.keys(byDay).sort().forEach((dia) => {
+      const dm = byDay[dia];
+      const w = worked(dm, dia === ymd(serverNow()));
+      const [yy, mm, dd] = dia.split("-");
+      lines.push([p.codigo, '"' + p.nome.replace(/"/g, '""') + '"', dd + "/" + mm + "/" + yy,
+        dm.map((m) => hhmm(m.momento) + (m.origem === "ajuste" ? "(ajuste)" : "")).join(" "),
+        fmtDur(w), Math.round(w / 60000)].join(";"));
+    });
+    const blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ponto_" + p.codigo + "_" + mes + ".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+
+  // ---------- funcionários ----------
+  let editId = null;
+  async function loadPeople() {
+    try {
+      pessoas = await rpc("admin_funcionarios", { p_token: token });
+    } catch (e) { return; }
+    const ul = $("lst-pessoas");
+    ul.textContent = "";
+    pessoas.forEach((p) => {
+      const li = document.createElement("li");
+      const info = document.createElement("div");
+      const n = document.createElement("span"); n.textContent = p.nome;
+      const c = document.createElement("span"); c.className = "mono note"; c.textContent = " " + p.codigo;
+      info.append(n, c);
+      if (p.admin) { const t = document.createElement("span"); t.className = "tag"; t.textContent = "admin"; info.appendChild(t); }
+      if (!p.ativo) { const t = document.createElement("span"); t.className = "tag"; t.textContent = "inativo"; info.appendChild(t); }
+      const b = document.createElement("button");
+      b.className = "btn btn-small"; b.type = "button"; b.textContent = "Editar";
+      b.addEventListener("click", () => openPerson(p));
+      li.append(info, b);
+      ul.appendChild(li);
+    });
+  }
+  function openPerson(p) {
+    editId = p ? p.id : null;
+    $("frm-pessoa").hidden = false;
+    $("frm-pessoa-titulo").textContent = p ? "Editar " + p.nome : "Novo funcionário";
+    $("p-codigo").value = p ? p.codigo : "";
+    $("p-nome").value = p ? p.nome : "";
+    $("p-pin").value = "";
+    $("p-pin").required = !p;
+    $("p-pin-nota").hidden = !p;
+    $("p-admin").checked = p ? p.admin : false;
+    $("p-ativo").checked = p ? p.ativo : true;
+    say($("msg-pessoa"), "");
+    $("p-codigo").focus();
+  }
+  $("btn-novo").addEventListener("click", () => openPerson(null));
+  $("btn-cancelar-pessoa").addEventListener("click", () => { $("frm-pessoa").hidden = true; });
+  $("frm-pessoa").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    try {
+      await rpc("admin_salvar_funcionario", {
+        p_token: token, p_id: editId,
+        p_codigo: $("p-codigo").value, p_nome: $("p-nome").value, p_pin: $("p-pin").value || null,
+        p_admin: $("p-admin").checked, p_ativo: $("p-ativo").checked,
+      });
+      $("frm-pessoa").hidden = true;
+      await loadPeople();
+    } catch (e) {
+      say($("msg-pessoa"), e.message, "err");
+    }
+  });
+
+  // ---------- local ----------
+  async function loadLocal() {
+    try {
+      const c = await rpc("admin_config", { p_token: token });
+      $("l-nome").value = c.nome_local || "";
+      $("l-lat").value = c.lat != null ? c.lat : "";
+      $("l-lng").value = c.lng != null ? c.lng : "";
+      $("l-raio").value = c.raio_m;
+      $("local-status").textContent = c.lat != null
+        ? "Cerca virtual ligada: o ponto só é aceito a até " + c.raio_m + " m do local."
+        : "Cerca virtual desligada: o ponto é aceito de qualquer lugar.";
+    } catch (e) {
+      say($("msg-local"), e.message, "err");
+    }
+  }
+  $("btn-aqui").addEventListener("click", async () => {
+    say($("msg-local"), "Obtendo sua localização…");
+    try {
+      const c = await getPosition();
+      $("l-lat").value = c.latitude.toFixed(6);
+      $("l-lng").value = c.longitude.toFixed(6);
+      say($("msg-local"), "Localização preenchida (precisão de " + Math.round(c.accuracy) + " m). Confira e clique em Salvar local.", "ok");
+    } catch (e) {
+      say($("msg-local"), e.message, "err");
+    }
+  });
+  $("frm-local").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const num = (v) => { v = String(v).trim().replace(",", "."); return v === "" ? null : Number(v); };
+    const lat = num($("l-lat").value), lng = num($("l-lng").value);
+    if ((lat != null && isNaN(lat)) || (lng != null && isNaN(lng))) {
+      say($("msg-local"), "Latitude e longitude devem ser números, por exemplo -23.550520.", "err"); return;
+    }
+    try {
+      const c = await rpc("admin_salvar_config", {
+        p_token: token, p_nome_local: $("l-nome").value, p_lat: lat, p_lng: lng, p_raio_m: Number($("l-raio").value),
+      });
+      me.cerca = c.lat != null; me.raio_m = c.raio_m; me.nome_local = c.nome_local;
+      showApp();
+      await loadLocal();
+      say($("msg-local"), "Local salvo.", "ok");
+    } catch (e) {
+      say($("msg-local"), e.message, "err");
+    }
+  });
+
+  // ---------- início ----------
+  if (!token) {
+    showLogin();
+  } else {
+    loadSituacao().catch((e) => {
+      if (token) { showLogin(); say($("msg-login"), e.message, "err"); }
+    });
+  }
+  // Atualiza a situação ao voltar para o app (ex.: celular desbloqueado no dia seguinte).
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && token && me) {
+      rpc("situacao", { p_token: token }).then((s) => {
+        me = s; syncClock(s.agora); hoje = s.hoje || []; showApp();
+      }).catch(() => {});
+    }
+  });
+})();
+</script>
+</body>
+</html>
