@@ -1,6 +1,6 @@
 ---
 name: article-writing
-description: Escreve artigos, guias, posts de blog, tutoriais, newsletters, circulares a clientes e outros textos longos com voz própria, derivada de exemplos fornecidos ou do perfil da marca. Use quando o usuário quiser um texto longo bem acabado, especialmente quando voz, estrutura e credibilidade importam (ex.: explicar a reforma tributária a empresários).
+description: "Escreve artigos, guias, posts de blog, tutoriais, newsletters, circulares a clientes e outros textos longos com voz própria, derivada de exemplos fornecidos ou do perfil da marca. Use quando o usuário quiser um texto longo bem acabado, especialmente quando voz, estrutura e credibilidade importam (ex.: explicar a reforma tributária a empresários)."
 metadata:
   origin: ECC (traduzido e adaptado para a Attivare)
 ---
